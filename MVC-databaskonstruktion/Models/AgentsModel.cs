@@ -8,24 +8,32 @@ namespace MVC_databaskonstruktion.Models
     {
         private IConfiguration _configuration;
         private string connectionString;
+        private DatabaseRepository _databaseRepository;
 
         public AgentsModel(IConfiguration configuration)
         {
             _configuration = configuration;
-            this.connectionString = _configuration["ConnectionString"];
+            _databaseRepository = new DatabaseRepository(_configuration);
         }
 
         public DataTable GetAgents()
         {
-            MySqlConnection dbcon = new MySqlConnection(connectionString);
-            dbcon.Open();
-            MySqlDataAdapter adapter = new MySqlDataAdapter("SELECT * FROM Agent;", dbcon);
-            DataSet ds = new DataSet();
-            adapter.Fill(ds, "result");
-            DataTable agentsTable = ds.Tables["result"];
-            dbcon.Close();
+            return _databaseRepository.GetTable("Agent");
+        }
 
-            return agentsTable;
+        public DataTable GetFieldAgents()
+        {
+            return _databaseRepository.GetTable("FieldAgents");
+        }
+
+        public DataTable GetGroupLeaders()
+        {
+            return _databaseRepository.GetTable("GroupLeaders");
+        }
+
+        public DataTable GetManagers()
+        {
+            return _databaseRepository.GetTable("Managers");
         }
     }
 }

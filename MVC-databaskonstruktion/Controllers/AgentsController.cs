@@ -23,7 +23,9 @@ namespace MVC_databaskonstruktion.Controllers
         private void GetAgents()
         {
             _agentsModel = new AgentsModel(this._configuration);
-            DataTable agents = _agentsModel.GetAgents();
+            DataTable agents = _agentsModel.GetFieldAgents();
+            DataTable groupLeaders = _agentsModel.GetGroupLeaders();
+            DataTable managers = _agentsModel.GetManagers();
             ViewBag.Agents = agents;
         }
     }
