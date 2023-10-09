@@ -1,0 +1,27 @@
+﻿@model System.Data.DataTable
+
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            @foreach (System.Data.DataColumn column in Model.Columns)
+            {
+                <th scope="col">
+                    @column.ColumnName
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (System.Data.DataRow row in Model.Rows)
+        {
+            <tr>
+                @for (int col = 0; col < Model.Columns.Count; col++)
+                {
+                    <td>
+                        @row[col]
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

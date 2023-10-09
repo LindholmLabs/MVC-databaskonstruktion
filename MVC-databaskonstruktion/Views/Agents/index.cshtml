@@ -1,28 +1,13 @@
-﻿<table class="table table-striped">
-    <thead class="table-dark">
-        <tr>
-            @foreach (var agent in ViewBag.Agents.Columns)
-            {
-                <th scope="col">
-                    @agent.ColumnName
-                </th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var row in ViewBag.Agents.Rows)
-        {
-            <tr>
-                @for (int i = 0; i < ViewBag.Agents.Columns.Count; i++)
-                {
-                    <td>
-                        @row[i]
-                    </td>
-                }
-            </tr>
-        }
-                    
-    </tbody>
-</table>
+﻿<h3>FieldAgents</h3>
+<partial name="_TablePartial" model="ViewBag.FieldAgents" />
+<hr />
+
+<h3>GroupLeaders</h3>
+<partial name="_TablePartial" model="ViewBag.GroupLeaders" />
+<hr />
+
+<h3>Managers</h3>
+<partial name="_TablePartial" model="ViewBag.Managers" />
+<hr />
 
 <button class="btn btn-primary">test</button>
