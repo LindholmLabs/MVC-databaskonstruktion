@@ -5,6 +5,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>MVC_databaskonstruktion</RootNamespace>
+    <UserSecretsId>4c79996b-6af0-4b65-9da8-fb4c8262bb2f</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.1.0" />
+  </ItemGroup>
 
 </Project>

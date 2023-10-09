@@ -2,7 +2,7 @@
 
 namespace MVC_databaskonstruktion.Controllers
 {
-    public class AgentController : Controller
+    public class AgentsController : Controller
     {
         public IActionResult Index()
         {
