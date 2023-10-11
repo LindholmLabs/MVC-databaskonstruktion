@@ -1,5 +1,4 @@
 ﻿using MVC_databaskonstruktion.Utils;
-using System.Data;
 
 namespace MVC_databaskonstruktion.Models
 {
@@ -13,17 +12,27 @@ namespace MVC_databaskonstruktion.Models
         {
             _configuration = configuration;
             _databaseRepository = new DatabaseRepository(_configuration);
-            _tableBuilder = new TableObjectBuilder();
+            _tableBuilder = new TableObjectBuilder()
+                .SetPrimaryKeys(new List<string> { "CodeName" })
+                .SetDeleteTable("Agent")
+                .SetRedirect("Index");
         }
 
         public TableObject GetAgents()
         {   
             return _tableBuilder.SetControllerName("Agents")
-                .SetDeleteTable("Agent")
                 .SetDataTable(_databaseRepository.GetTable("Agent"))
-                .SetPrimaryKeys(new List<string> { "AgentId" })
-                .SetRedirect("Index")
                 .Build();
+        }
+
+        public void DeleteAgent(string table, string CodeName)
+        {
+            List<KeyValuePair<string, string>> conditions = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("CodeName", CodeName)
+            };
+
+            _databaseRepository.DeleteRow(table, conditions);
         }
 
         public TableObject GetFieldAgents()
