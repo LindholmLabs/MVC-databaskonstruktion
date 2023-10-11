@@ -1,7 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
 
-namespace MVC_databaskonstruktion.Models
+namespace MVC_databaskonstruktion.Utils
 {
     public class DatabaseRepository
     {
