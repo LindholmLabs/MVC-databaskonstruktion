@@ -14,15 +14,7 @@ namespace MVC_databaskonstruktion.Models
             _databaseRepository = new DatabaseRepository(_configuration);
             _tableBuilder = new TableObjectBuilder()
                 .SetPrimaryKeys(new List<string> { "CodeName" })
-                .SetDeleteTable("Agent")
-                .SetRedirect("Index");
-        }
-
-        public TableObject GetAgents()
-        {   
-            return _tableBuilder.SetControllerName("Agents")
-                .SetDataTable(_databaseRepository.GetTable("Agent"))
-                .Build();
+                .SetDeleteTable("Agent");
         }
 
         public void DeleteAgent(string table, string CodeName)
@@ -39,6 +31,7 @@ namespace MVC_databaskonstruktion.Models
         {
             return _tableBuilder
                 .SetDataTable(_databaseRepository.GetTable("FieldAgents"))
+                .SetRedirect("FieldAgentDetails")
                 .Build();
         }
 
@@ -46,6 +39,7 @@ namespace MVC_databaskonstruktion.Models
         {
             return _tableBuilder
                 .SetDataTable(_databaseRepository.GetTable("GroupLeaders"))
+                .SetRedirect(string.Empty)
                 .Build();
         }
 
@@ -53,7 +47,18 @@ namespace MVC_databaskonstruktion.Models
         {
             return _tableBuilder
                 .SetDataTable(_databaseRepository.GetTable("Managers"))
+                .SetRedirect(string.Empty)
                 .Build();
         }
+
+        public TableObject GetAgentOperations(string CodeName)
+        {
+
+            string query = $"SELECT * FROM OperatesIn WHERE CodeName = '{CodeName}';";
+            return _tableBuilder.SetDataTable(_databaseRepository.GetTable(query))
+                .SetDeleteTable(string.Empty)
+                .SetRedirect(string.Empty)
+                .Build();
+        } 
     }
 }

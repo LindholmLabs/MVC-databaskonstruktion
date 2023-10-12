@@ -22,6 +22,12 @@ namespace MVC_databaskonstruktion.Controllers
             return View();
         }
 
+        public IActionResult FieldAgentDetails(string CodeName)
+        {
+            ViewBag.AgentOperations = _agentsModel.GetAgentOperations(CodeName);
+            return View();
+        }
+
         public IActionResult Delete(string table, string CodeName)
         {
             try
@@ -37,9 +43,6 @@ namespace MVC_databaskonstruktion.Controllers
                         break;
                     case 1452:
                         TempData["ErrorMessage"] = "Foreign Key Constraint Failed!";
-                        break;
-                    case 1062:
-                        TempData["ErrorMessage"] = "Unique Constraint Failed!";
                         break;
                     default:
                         TempData["ErrorMessage"] = $"Something went wrong: {e.Number}";

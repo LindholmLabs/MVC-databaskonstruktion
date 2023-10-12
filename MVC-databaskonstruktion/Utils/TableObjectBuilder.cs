@@ -14,9 +14,10 @@ namespace MVC_databaskonstruktion.Utils
         {
             _dataTable = dataTable;
         }
+
         public TableObjectBuilder()
         {
-            //empty constructor if you want to set the DataTable later
+            //empty constructor to be able to set DataTable later
         }
 
         public TableObjectBuilder SetControllerName(string controllerName)
