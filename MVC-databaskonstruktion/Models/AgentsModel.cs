@@ -1,4 +1,5 @@
-﻿using MVC_databaskonstruktion.Utils;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using MVC_databaskonstruktion.Utils;
 
 namespace MVC_databaskonstruktion.Models
 {
@@ -59,6 +60,27 @@ namespace MVC_databaskonstruktion.Models
                 .SetDeleteTable(string.Empty)
                 .SetRedirect(string.Empty)
                 .Build();
-        } 
+        }
+
+        public Modal CreateAgentModal()
+        {
+            var trueFalseList = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "True", Value = "True" },
+                new SelectListItem { Text = "False", Value = "False" }
+            };
+
+            var modalBuilder = new ModalBuilder()
+               .WithTitle("AddAgent")
+               .AddInput("CodeName", "CodeName", "normal", "CodeName")
+               .AddInput("FirstName", "FirstName", "normal", "firstname")
+               .AddInput("LastName", "LastName", "normal", "lastname")
+               .AddInput("Salary", "Salary", "normal", "Salary")
+               .AddInput("IsFieldAgent", "Choose Option", "dropdown", "", trueFalseList)
+               .AddInput("IsGroupLeader", "Choose Option", "dropdown", "", trueFalseList)
+               .AddInput("IsManager", "Choose Option", "dropdown", "", trueFalseList);
+
+            return modalBuilder.Build();
+        }
     }
 }

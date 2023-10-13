@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC_databaskonstruktion.Models;
+using MVC_databaskonstruktion.Utils;
 using MySql.Data.MySqlClient;
 using System.Linq.Expressions;
 
@@ -18,7 +20,9 @@ namespace MVC_databaskonstruktion.Controllers
 
         public IActionResult Index()
         {
-            BuildAgentTables();
+            MapTables();
+            MapDropdowns();
+
             return View();
         }
 
@@ -52,11 +56,16 @@ namespace MVC_databaskonstruktion.Controllers
             return RedirectToAction("Index");
         }
 
-        private void BuildAgentTables()
+        private void MapTables()
         {
             ViewBag.FieldAgents = _agentsModel.GetFieldAgents();
             ViewBag.GroupLeaders = _agentsModel.GetGroupLeaders();
             ViewBag.Managers = _agentsModel.GetManagers();
+        }
+        
+        public void MapDropdowns()
+        {
+            ViewBag.CreateAgentModal = _agentsModel.CreateAgentModal();
         }
     }
 }
