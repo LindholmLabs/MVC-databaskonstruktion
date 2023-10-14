@@ -1,4 +1,5 @@
 ﻿using MVC_databaskonstruktion.Utils;
+using System.Runtime.InteropServices;
 
 namespace MVC_databaskonstruktion.Models
 {
@@ -41,6 +42,37 @@ namespace MVC_databaskonstruktion.Models
             return _tableBuilder
                 .SetDataTable(_databaseRepository.GetTable($"SELECT * FROM Operation WHERE IncidentName = '{IncidentName}' AND IncidentNumber = '{IncidentNumber}';"))
                 .Build();
+        }
+
+        public ModalContext CreateIncidentModal()
+        {
+            var TerrainSelection = _databaseRepository.GetColumnAsDropdown("SELECT TerrainCode FROM Terrain;");
+
+            var modalBuilder = new ModalBuilder()
+                .SetTitle("Create Incident")
+                .SetIdentifier("createIncidentModal")
+                .SetAction("Create", "Incidents")
+                .AddInput("IncidentName", "IncidentName", "normal", "IncidentName")
+                .AddInput("IncidentNumber", "IncidentNumber", "normal", "IncidentNumber")
+                .AddInput("RegionName", "RegionName", "normal", "RegionName")
+                .AddInput("Terrain", "Terrain", "dropdown", "", TerrainSelection)
+                .AddInput("Location", "Location", "normal", "Location");
+
+            return modalBuilder.Build();
+        }
+
+        public void CreateIncident(string IncidentName, int IncidentNumber, string RegionName, int Terrain, string Location)
+        {
+            var IncidentData = new List<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>("IncidentName", IncidentName),
+                new KeyValuePair<string, object>("IncidentNumber", IncidentNumber),
+                new KeyValuePair<string, object>("RegionName", RegionName),
+                new KeyValuePair<string, object>("Terrain", Terrain),
+                new KeyValuePair<string, object>("Location", Location)
+            };
+
+            _databaseRepository.CreateRow("Incident", IncidentData);
         }
     }
 }

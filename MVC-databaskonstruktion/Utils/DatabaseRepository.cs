@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using MySql.Data.MySqlClient;
 using System.Data;
 
 namespace MVC_databaskonstruktion.Utils
@@ -27,6 +28,23 @@ namespace MVC_databaskonstruktion.Utils
                 adapter.Fill(ds, "result");
                 return ds.Tables["result"];
             }
+        }
+
+        public List<SelectListItem> GetColumnAsDropdown(string query) 
+        {
+            var table = GetTable(query);
+            var dropdown = new List<SelectListItem>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                dropdown.Add(new SelectListItem
+                {
+                    Value = row[0].ToString(),
+                    Text = row[0].ToString()
+                });
+            }
+
+            return dropdown;
         }
 
         public void CreateRow(string table, List<KeyValuePair<string, object>> data)
