@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC_databaskonstruktion.Models;
-using MVC_databaskonstruktion.Utils;
 using MySql.Data.MySqlClient;
 using System.Diagnostics;
 

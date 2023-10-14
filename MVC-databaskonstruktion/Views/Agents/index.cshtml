@@ -10,4 +10,15 @@
 <partial name="_TablePartial" model="ViewBag.Managers" />
 <hr />
 
+<label class="mt-1">Hire agent:</label>
+<br />
 <partial name="_ModalPartial" model="ViewBag.CreateAgentModal" />
+<hr />
+
+<form action="@Url.Action("Delete")" method="get" class="mt-1">
+    <label>Delete Agent:</label>
+    <br />
+    <input type="text" name="CodeName" placeholder="CodeName" class="form-control d-inline-block" style="vertical-align: middle; width: auto;" />
+    <input name="table" type="hidden" value="Agent" />
+    <button type="submit" class="btn btn-danger ml-2">Delete</button>
+</form>
