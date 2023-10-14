@@ -1,0 +1,10 @@
+﻿<form action="@Url.Action("index")" method="get" class="mt-1">
+    <label>Search for Incident:</label>
+    <br />
+    <input type="text" name="IncidentName" placeholder="Search" class="form-control d-inline-block" style="vertical-align: middle; width: auto;" />
+    <button type="submit" class="btn btn-primary ml-2">Search</button>
+</form>
+<hr />
+
+<h3>Incidents</h3>
+<partial name="_TablePartial" model="ViewBag.Table" />
