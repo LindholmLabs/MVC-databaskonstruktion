@@ -18,6 +18,29 @@ namespace MVC_databaskonstruktion.Models
                 .SetDeleteTable("Agent");
         }
 
+        public void CreateAgent(
+            string CodeName, 
+            string FirstName, 
+            string LastName, 
+            decimal Salary, 
+            bool IsFieldAgent, 
+            bool IsGroupLeader, 
+            bool IsManager)
+        {
+            var agentData = new List<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>("CodeName", CodeName),
+                new KeyValuePair<string, object>("FirstName", FirstName),
+                new KeyValuePair<string, object>("LastName", LastName),
+                new KeyValuePair<string, object>("Salary", Salary),
+                new KeyValuePair<string, object>("IsFieldAgent", IsFieldAgent),
+                new KeyValuePair<string, object>("IsGroupLeader", IsGroupLeader),
+                new KeyValuePair<string, object>("IsManager", IsManager)
+            };
+
+            _databaseRepository.CreateRow("Agent", agentData);
+        }
+
         public void DeleteAgent(string table, string CodeName)
         {
             List<KeyValuePair<string, string>> conditions = new List<KeyValuePair<string, string>>

@@ -29,6 +29,29 @@ namespace MVC_databaskonstruktion.Utils
             }
         }
 
+        public void CreateRow(string table, List<KeyValuePair<string, object>> data)
+        {
+            if (string.IsNullOrEmpty(table) || data == null || data.Count == 0)
+            {
+                throw new ArgumentException("Invalid table name or data to insert.");
+            }
+
+            using MySqlConnection dbcon = new MySqlConnection(_connectionString);
+            dbcon.Open();
+
+            string columns = string.Join(", ", data.Select(d => d.Key));
+            string values = string.Join(", ", data.Select(d => $"@{d.Key}"));
+            string query = $"INSERT INTO {table} ({columns}) VALUES ({values});";
+
+            using MySqlCommand cmd = new MySqlCommand(query, dbcon);
+            foreach (var item in data)
+            {
+                cmd.Parameters.AddWithValue($"@{item.Key}", item.Value);
+            }
+
+            cmd.ExecuteNonQuery();
+        }
+
         public void DeleteRow(string table, List<KeyValuePair<string, string>> primaryKeys)
         {
             string whereClause = "WHERE ";

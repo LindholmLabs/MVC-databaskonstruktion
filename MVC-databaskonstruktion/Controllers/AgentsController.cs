@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC_databaskonstruktion.Models;
+using MVC_databaskonstruktion.Utils;
 using MySql.Data.MySqlClient;
 using System.Diagnostics;
 
@@ -25,17 +26,40 @@ namespace MVC_databaskonstruktion.Controllers
         }
 
         public IActionResult Create(
-            string  CodeName, 
-            string  FirstName, 
-            string  LastName, 
-            int     Salary, 
-            bool    IsFieldAgent, 
-            bool    IsGroupLeader, 
-            bool    IsManager)
+            string CodeName, 
+            string FirstName, 
+            string LastName, 
+            decimal Salary, 
+            bool IsFieldAgent, 
+            bool IsGroupLeader, 
+            bool IsManager)
         {
             Trace.WriteLine("Running function: Create new Agent." +
                 "Received parameters: " +
                 CodeName + FirstName + LastName + Salary + IsFieldAgent + IsGroupLeader + IsManager);
+
+            try
+            {
+                _agentsModel.CreateAgent(CodeName, FirstName, LastName, Salary, IsFieldAgent, IsGroupLeader, IsManager);
+            }
+            catch (MySqlException e)
+            {
+                switch (e.Number)
+                {
+                    case 1062:
+                        TempData["ErrorMessage"] = "CodeName already exists!";
+                        break;
+                    case 1406:
+                        TempData["ErrorMessage"] = "Data too long!";
+                        break;
+                    case 3819:
+                        TempData["ErrorMessage"] = "Invalid Data!";
+                        break;
+                    default:
+                        TempData["ErrorMessage"] = $"Something went wrong: {e.Number}";
+                        break;
+                }
+            }
 
             return RedirectToAction("Index");
         }
@@ -67,6 +91,7 @@ namespace MVC_databaskonstruktion.Controllers
                         break;
                 }
             }
+
             return RedirectToAction("Index");
         }
 
