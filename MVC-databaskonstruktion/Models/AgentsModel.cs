@@ -62,7 +62,7 @@ namespace MVC_databaskonstruktion.Models
                 .Build();
         }
 
-        public Modal CreateAgentModal()
+        public ModalContext CreateAgentModal()
         {
             var trueFalseList = new List<SelectListItem>
             {
@@ -71,14 +71,16 @@ namespace MVC_databaskonstruktion.Models
             };
 
             var modalBuilder = new ModalBuilder()
-               .WithTitle("AddAgent")
+               .SetTitle("Hire Agent")
+               .SetIdentifier("AddAgent")
+               .SetAction("Create", "Agents")
                .AddInput("CodeName", "CodeName", "normal", "CodeName")
                .AddInput("FirstName", "FirstName", "normal", "firstname")
                .AddInput("LastName", "LastName", "normal", "lastname")
                .AddInput("Salary", "Salary", "normal", "Salary")
-               .AddInput("IsFieldAgent", "Choose Option", "dropdown", "", trueFalseList)
-               .AddInput("IsGroupLeader", "Choose Option", "dropdown", "", trueFalseList)
-               .AddInput("IsManager", "Choose Option", "dropdown", "", trueFalseList);
+               .AddInput("IsFieldAgent", "IsFieldAgent", "dropdown", "", trueFalseList)
+               .AddInput("IsGroupLeader", "IsGroupLeader", "dropdown", "", trueFalseList)
+               .AddInput("IsManager", "IsManager", "dropdown", "", trueFalseList);
 
             return modalBuilder.Build();
         }

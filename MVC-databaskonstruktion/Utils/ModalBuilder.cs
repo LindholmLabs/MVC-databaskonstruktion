@@ -4,11 +4,24 @@ namespace MVC_databaskonstruktion.Utils
 {
     public class ModalBuilder
     {
-        private Modal _modal = new Modal { Inputs = new List<ModalInput>() };
+        private ModalContext _modal = new ModalContext { Inputs = new List<ModalInput>() };
 
-        public ModalBuilder WithTitle(string title)
+        public ModalBuilder SetTitle(string title)
         {
             _modal.Title = title;
+            return this;
+        }
+
+        public ModalBuilder SetIdentifier(string identifier)
+        {
+            _modal.Identifier = identifier;
+            return this;
+        }
+
+        public ModalBuilder SetAction(string action, string controller)
+        {
+            _modal.Action = action;
+            _modal.Controller = controller;
             return this;
         }
 
@@ -18,7 +31,7 @@ namespace MVC_databaskonstruktion.Utils
             return this;
         }
 
-        public Modal Build()
+        public ModalContext Build()
         {
             return _modal;
         }

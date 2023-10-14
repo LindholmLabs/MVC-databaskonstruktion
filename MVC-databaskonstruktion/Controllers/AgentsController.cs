@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC_databaskonstruktion.Models;
-using MVC_databaskonstruktion.Utils;
 using MySql.Data.MySqlClient;
-using System.Linq.Expressions;
+using System.Diagnostics;
 
 namespace MVC_databaskonstruktion.Controllers
 {
@@ -24,6 +22,22 @@ namespace MVC_databaskonstruktion.Controllers
             MapDropdowns();
 
             return View();
+        }
+
+        public IActionResult Create(
+            string  CodeName, 
+            string  FirstName, 
+            string  LastName, 
+            int     Salary, 
+            bool    IsFieldAgent, 
+            bool    IsGroupLeader, 
+            bool    IsManager)
+        {
+            Trace.WriteLine("Running function: Create new Agent." +
+                "Received parameters: " +
+                CodeName + FirstName + LastName + Salary + IsFieldAgent + IsGroupLeader + IsManager);
+
+            return RedirectToAction("Index");
         }
 
         public IActionResult FieldAgentDetails(string CodeName)

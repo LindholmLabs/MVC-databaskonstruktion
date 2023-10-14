@@ -1,19 +1,19 @@
 ﻿@using MVC_databaskonstruktion.Utils
-@model Modal
+@model ModalContext
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#@Model.Title">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#@Model.Identifier">
     Open @Model.Title
 </button>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="@Model.Title">
+<div class="modal fade" tabindex="-1" role="dialog" id="@Model.Identifier">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">@Model.Title</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form>
+            <form method="post" action="@Url.Action(Model.Action, Model.Controller)">
+                <div class="modal-body">
                     @foreach (var input in Model.Inputs)
                     {
                         switch (input.Type)
@@ -21,13 +21,13 @@
                             case "datetime":
                                 <div class="form-group">
                                     <label for="@input.Id">@input.Label</label>
-                                    <input type="date" class="form-control" id="@input.Id" placeholder="@input.Placeholder">
+                                    <input name="@input.Id" type="date" class="form-control" id="@input.Id" placeholder="@input.Placeholder">
                                 </div>
                                 break;
                             case "dropdown":
                                 <div class="form-group">
                                     <label for="@input.Id">@input.Label</label>
-                                    <select class="form-control" id="@input.Id">
+                                    <select name="@input.Id" class="form-control" id="@input.Id">
                                         @foreach (var item in input.DropdownItems)
                                         {
                                             <option value="@item.Value">@item.Text</option>
@@ -41,23 +41,23 @@
                             case "normal":
                                 <div class="form-group">
                                     <label for="@input.Id">@input.Label</label>
-                                    <input type="text" class="form-control" id="@input.Id" placeholder="@input.Placeholder">
+                                    <input name="@input.Id" type="text" class="form-control" id="@input.Id" placeholder="@input.Placeholder">
                                 </div>
                                 break;
                             case "multiline":
                                 <div class="form-group">
                                     <label for="@input.Id">@input.Label</label>
-                                    <textarea class="form-control" id="@input.Id" placeholder="@input.Placeholder"></textarea>
+                                    <textarea name="@input.Id" class="form-control" id="@input.Id" placeholder="@input.Placeholder"></textarea>
                                 </div>
                                 break;
                         }
                     }
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
