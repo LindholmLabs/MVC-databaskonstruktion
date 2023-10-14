@@ -16,9 +16,10 @@ namespace MVC_databaskonstruktion.Controllers
             _operationsModel = new OperationsModel(_configuration);
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string OperationName = "")
         {
-            ViewBag.Table = _operationsModel.GetOperations();
+            ViewBag.Table = _operationsModel.GetOperations(OperationName);
+            ViewBag.Modal = _operationsModel.CreateOperationModal();
 
             return View();
         }
@@ -38,6 +39,34 @@ namespace MVC_databaskonstruktion.Controllers
                         break;
                     case 1452:
                         TempData["ErrorMessage"] = "Foreign Key Constraint Failed!";
+                        break;
+                    default:
+                        TempData["ErrorMessage"] = $"Something went wrong: {e.Number}";
+                        break;
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Create(string OperationName, DateTime StartDate, DateTime EndDate, bool SuccessRate, string GroupLeader, string Incident)
+        {
+            try
+            {
+                _operationsModel.CreateOperation(OperationName, StartDate, EndDate, SuccessRate, GroupLeader, Incident);
+            }
+            catch (MySqlException e)
+            {
+                switch (e.Number)
+                {
+                    case 1062:
+                        TempData["ErrorMessage"] = "Operation already exists!";
+                        break;
+                    case 1406:
+                        TempData["ErrorMessage"] = "Data too long!";
+                        break;
+                    case 3819:
+                        TempData["ErrorMessage"] = "Invalid Data!";
                         break;
                     default:
                         TempData["ErrorMessage"] = $"Something went wrong: {e.Number}";

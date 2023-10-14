@@ -30,17 +30,19 @@ namespace MVC_databaskonstruktion.Utils
             }
         }
 
-        public List<SelectListItem> GetColumnAsDropdown(string query) 
+        public List<SelectListItem> GetColumnAsDropdown(string query)
         {
             var table = GetTable(query);
             var dropdown = new List<SelectListItem>();
 
             foreach (DataRow row in table.Rows)
             {
+                string value = string.Join(", ", row.ItemArray.Select(item => item.ToString()));
+
                 dropdown.Add(new SelectListItem
                 {
-                    Value = row[0].ToString(),
-                    Text = row[0].ToString()
+                    Value = value,
+                    Text = value
                 });
             }
 
