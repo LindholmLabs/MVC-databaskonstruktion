@@ -77,8 +77,8 @@ namespace MVC_databaskonstruktion.Models
 
         public TableObject GetAgentOperations(string CodeName)
         {
-
             string query = $"SELECT * FROM OperatesIn WHERE CodeName = '{CodeName}';";
+
             return _tableBuilder.SetDataTable(_databaseRepository.GetTable(query))
                 .SetDeleteTable(string.Empty)
                 .SetRedirect(string.Empty)

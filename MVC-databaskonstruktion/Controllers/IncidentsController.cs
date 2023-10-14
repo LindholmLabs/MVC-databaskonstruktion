@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC_databaskonstruktion.Models;
-using MVC_databaskonstruktion.Utils;
 using MySql.Data.MySqlClient;
-using System.Diagnostics;
 
 namespace MVC_databaskonstruktion.Controllers
 {
@@ -24,6 +22,12 @@ namespace MVC_databaskonstruktion.Controllers
             return View();
         }
 
+        public IActionResult Details(string IncidentName, int incidentNumber)
+        {
+            ViewBag.Operations = _incidentsModel.GetOperations(IncidentName, incidentNumber);
+            return View();
+        }
+
         public IActionResult Delete(string table, string incidentName, string incidentNumber)
         {
             try
@@ -41,7 +45,7 @@ namespace MVC_databaskonstruktion.Controllers
                         TempData["ErrorMessage"] = "Foreign Key Constraint Failed!";
                         break;
                     default:
-                        TempData["ErrorMessage"] = $"Something went wrong: {e.Number}";
+                        TempData["ErrorMessage"] = $"Something went wrong: error {e.Number}";
                         break;
                 }
             }

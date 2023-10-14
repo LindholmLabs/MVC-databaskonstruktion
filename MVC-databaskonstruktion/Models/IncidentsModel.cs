@@ -20,7 +20,8 @@ namespace MVC_databaskonstruktion.Models
         public TableObject GetIncidents(string searchQuery)
         {
             return _tableBuilder
-                .SetDataTable(_databaseRepository.GetTable($"SELECT * FROM Incident WHERE IncidentName LIKE '%{searchQuery}%'"))
+                .SetDataTable(_databaseRepository.GetTable($"SELECT * FROM Incident WHERE IncidentName LIKE '%{searchQuery}%';"))
+                .SetRedirect("Details")
                 .Build();
         }
 
@@ -33,6 +34,13 @@ namespace MVC_databaskonstruktion.Models
             };
 
             _databaseRepository.DeleteRow(table, conditions);
+        }
+
+        public TableObject GetOperations(string IncidentName, int IncidentNumber)
+        {
+            return _tableBuilder
+                .SetDataTable(_databaseRepository.GetTable($"SELECT * FROM Operation WHERE IncidentName = '{IncidentName}' AND IncidentNumber = '{IncidentNumber}';"))
+                .Build();
         }
     }
 }
