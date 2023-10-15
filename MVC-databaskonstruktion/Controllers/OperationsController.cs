@@ -24,6 +24,13 @@ namespace MVC_databaskonstruktion.Controllers
             return View();
         }
 
+        public IActionResult Details(string OperationName, DateTime StartDate, string IncidentName, int IncidentNumber)
+        {
+            ViewBag.AgentsInOperation = _operationsModel.GetAgentsInOperation(OperationName, StartDate, IncidentName, IncidentNumber);
+
+            return View("Details");
+        }
+
         public IActionResult Delete(string table, string IncidentName, string IncidentNumber, string OperationName, DateTime StartDate)
         {
             try

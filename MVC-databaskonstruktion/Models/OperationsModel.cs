@@ -23,6 +23,7 @@ namespace MVC_databaskonstruktion.Models
         {
             return _tableBuilder
                 .SetDataTable(_databaseRepository.GetTable($"SELECT * FROM Operation WHERE OperationName LIKE '%{searchQuery}%';"))
+                .SetRedirect("Details")
                 .Build();
         }
 
@@ -30,6 +31,17 @@ namespace MVC_databaskonstruktion.Models
         {
             return _tableBuilder
                 .SetDataTable(_databaseRepository.GetTable($"SELECT * FROM Operation WHERE IncidentName = '{IncidentName}' AND IncidentNumber = '{IncidentNumber}';"))
+                .Build();
+        }
+
+        public TableObject GetAgentsInOperation(string OperationName, DateTime StartDate, string IncidentName, int IncidentNumber)
+        {
+            return _tableBuilder
+                .SetDataTable(_databaseRepository.GetTable($"SELECT * FROM OperatesIn WHERE OperationName = '{OperationName}' AND StartDate = '{StartDate}' AND IncidentName = '{IncidentName}' AND IncidentNumber = '{IncidentNumber}';"))
+                .SetControllerName("Agents")
+                .SetDeleteTable("OperatesIn")
+                .SetRedirect("FieldAgentDetails")
+                .SetPrimaryKeys(new List<string> { "CodeName", "OperationName", "StartDate", "IncidentName", "IncidentNumber" })
                 .Build();
         }
 
