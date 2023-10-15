@@ -72,7 +72,7 @@ namespace MVC_databaskonstruktion.Utils
             cmd.ExecuteNonQuery();
         }
 
-        public void DeleteRow(string table, List<KeyValuePair<string, string>> primaryKeys)
+        public void DeleteRow(string table, List<KeyValuePair<string, object>> primaryKeys)
         {
             string whereClause = "WHERE ";
             for (var i = 0; i < primaryKeys.Count; i++)

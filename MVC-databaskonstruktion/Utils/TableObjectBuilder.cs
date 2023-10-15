@@ -7,6 +7,7 @@ namespace MVC_databaskonstruktion.Utils
         private DataTable _dataTable;
         private string _controllerName;
         private string? _deleteTable;
+        private string? _deletionController;
         private List<string>? _primaryKeys;
         private string? _redirect;
 
@@ -38,6 +39,12 @@ namespace MVC_databaskonstruktion.Utils
             return this;
         }
 
+        public TableObjectBuilder SetDeletionController(string controller)
+        {
+            _deletionController = controller;
+            return this;
+        }
+
         public TableObjectBuilder SetDataTable(DataTable dataTable)
         {
             _dataTable = dataTable;
@@ -55,11 +62,15 @@ namespace MVC_databaskonstruktion.Utils
             if (_dataTable == null)
                 throw new NullReferenceException("DataTable is null.");
 
+            if (_deletionController == null)
+                _deletionController = _controllerName;
+
             return new TableObject
             {
                 DataSet = this._dataTable,
                 ControllerName = this._controllerName,
                 DeleteTable = this._deleteTable,
+                DeletionController = this._deletionController,
                 PrimaryKeys = this._primaryKeys,
                 Redirect = this._redirect
             };

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC_databaskonstruktion.Models;
 using MySql.Data.MySqlClient;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace MVC_databaskonstruktion.Controllers
@@ -27,6 +28,7 @@ namespace MVC_databaskonstruktion.Controllers
         public IActionResult Details(string OperationName, DateTime StartDate, string IncidentName, int IncidentNumber)
         {
             ViewBag.AgentsInOperation = _operationsModel.GetAgentsInOperation(OperationName, StartDate, IncidentName, IncidentNumber);
+            ViewBag.AddAgentModal = _operationsModel.CreateAgentModal(OperationName, StartDate, IncidentName, IncidentNumber);
 
             return View("Details");
         }
@@ -58,6 +60,8 @@ namespace MVC_databaskonstruktion.Controllers
 
         public IActionResult Create(string OperationName, DateTime StartDate, DateTime EndDate, bool SuccessRate, string GroupLeader, string Incident)
         {
+            Trace.WriteLine("In Model: Successrate read as: " + SuccessRate);
+
             try
             {
                 _operationsModel.CreateOperation(OperationName, StartDate, EndDate, SuccessRate, GroupLeader, Incident);
@@ -82,6 +86,34 @@ namespace MVC_databaskonstruktion.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult AddAgent(string CodeName, string OperationName, DateTime StartDate, string IncidentName, int IncidentNumber)
+        {
+            try
+            {
+                _operationsModel.AddAgentToOperation(OperationName, StartDate, IncidentName, IncidentNumber, CodeName);
+            }
+            catch (MySqlException e)
+            {
+                switch (e.Number)
+                {
+                    case 1062:
+                        TempData["ErrorMessage"] = "Agent already exists!";
+                        break;
+                    case 1406:
+                        TempData["ErrorMessage"] = "Data too long!";
+                        break;
+                    case 3819:
+                        TempData["ErrorMessage"] = "Invalid Data!";
+                        break;
+                    default:
+                        TempData["ErrorMessage"] = $"Something went wrong: {e.Number}";
+                        break;
+                }
+            }
+
+            return RedirectToAction("Details", new { OperationName, StartDate, IncidentName, IncidentNumber });
         }
     }
 }

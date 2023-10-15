@@ -44,9 +44,9 @@ namespace MVC_databaskonstruktion.Models
 
         public void DeleteAgent(string table, string CodeName)
         {
-            List<KeyValuePair<string, string>> conditions = new List<KeyValuePair<string, string>>
+            List<KeyValuePair<string, object>> conditions = new List<KeyValuePair<string, object>>
             {
-                new KeyValuePair<string, string>("CodeName", CodeName)
+                new KeyValuePair<string, object>("CodeName", CodeName)
             };
 
             _databaseRepository.DeleteRow(table, conditions);

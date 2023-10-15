@@ -7,6 +7,7 @@ namespace MVC_databaskonstruktion.Utils
         public DataTable DataSet;
         public string ControllerName;
         public string? DeleteTable;
+        public string? DeletionController;
         public List<string>? PrimaryKeys;
         public string? Redirect;
     }

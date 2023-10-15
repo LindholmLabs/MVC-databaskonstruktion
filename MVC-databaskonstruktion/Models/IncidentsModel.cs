@@ -1,5 +1,4 @@
 ﻿using MVC_databaskonstruktion.Utils;
-using System.Runtime.InteropServices;
 
 namespace MVC_databaskonstruktion.Models
 {
@@ -28,10 +27,10 @@ namespace MVC_databaskonstruktion.Models
 
         public void DeleteIncident(string table, string incidentName, string incidentNumber)
         {
-            List<KeyValuePair<string, string>> conditions = new List<KeyValuePair<string, string>>
+            List<KeyValuePair<string, object>> conditions = new List<KeyValuePair<string, object>>
             {
-                new KeyValuePair<string, string>("IncidentName", incidentName),
-                new KeyValuePair<string, string>("IncidentNumber", incidentNumber)
+                new KeyValuePair<string, object>("IncidentName", incidentName),
+                new KeyValuePair<string, object>("IncidentNumber", incidentNumber)
             };
 
             _databaseRepository.DeleteRow(table, conditions);
@@ -41,6 +40,10 @@ namespace MVC_databaskonstruktion.Models
         {
             return _tableBuilder
                 .SetDataTable(_databaseRepository.GetTable($"SELECT * FROM Operation WHERE IncidentName = '{IncidentName}' AND IncidentNumber = '{IncidentNumber}';"))
+                .SetRedirect("Details")
+                .SetDeleteTable("Operation")
+                .SetPrimaryKeys(new List<string> { "IncidentName", "IncidentNumber", "OperationName", "StartDate" })
+                .SetControllerName("Operations")
                 .Build();
         }
 
