@@ -39,7 +39,7 @@ namespace MVC_databaskonstruktion.Models
         {
             return _tableBuilder
                 .SetDataTable(_databaseRepository.GetTable($"SELECT * FROM OperatesIn WHERE OperationName = '{OperationName}' AND StartDate = '{StartDate}' AND IncidentName = '{IncidentName}' AND IncidentNumber = '{IncidentNumber}';"))
-                .SetControllerName("Operations")
+                .SetControllerName("Agents")
                 .SetDeleteTable("OperatesIn")
                 .SetDeletionController("OperatesIn")
                 .SetRedirect("FieldAgentDetails")
