@@ -19,13 +19,16 @@ namespace MVC_databaskonstruktion.Controllers
         {
             ViewBag.Table = _incidentsModel.GetIncidents(IncidentName);
             ViewBag.Modal = _incidentsModel.CreateIncidentModal();
-
+            
             return View();
         }
 
         public IActionResult Details(string IncidentName, int incidentNumber)
         {
             ViewBag.Operations = _incidentsModel.GetOperations(IncidentName, incidentNumber);
+            ViewBag.AddOperationModal = _incidentsModel.CreateOperationModal(IncidentName, incidentNumber);
+            ViewBag.Reports = _incidentsModel.GetReports(IncidentName, incidentNumber);
+
             return View();
         }
 
@@ -80,6 +83,38 @@ namespace MVC_databaskonstruktion.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult CreateOperation(string OperationName, DateTime StartDate, DateTime EndDate, bool SuccessRate, string GroupLeader, string IncidentName, int IncidentNumber)
+        {
+            try
+            {
+                _incidentsModel.CreateOperation(OperationName, StartDate, EndDate, SuccessRate, GroupLeader, IncidentName, IncidentNumber);
+            }
+            catch (MySqlException e)
+            {
+                switch (e.Number)
+                {
+                    case 1062:
+                        TempData["ErrorMessage"] = "Incident already exists!";
+                        break;
+                    case 1406:
+                        TempData["ErrorMessage"] = "Data too long!";
+                        break;
+                    case 3819:
+                        TempData["ErrorMessage"] = "Invalid Data!";
+                        break;
+                    default:
+                        TempData["ErrorMessage"] = $"Something went wrong: {e.Number}";
+                        break;
+                }
+            }
+
+            return RedirectToAction("Details", new
+            {
+                IncidentName,
+                IncidentNumber
+            });
         }
     }
 }

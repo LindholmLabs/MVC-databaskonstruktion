@@ -55,6 +55,12 @@ namespace MVC_databaskonstruktion.Controllers
                 }
             }
 
+            var referrer = Request.Headers["Referer"];
+            if (!string.IsNullOrEmpty(referrer))
+            {
+                return Redirect(referrer);
+            }
+
             return RedirectToAction("Index");
         }
 

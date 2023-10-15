@@ -1,4 +1,5 @@
-﻿using MVC_databaskonstruktion.Utils;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using MVC_databaskonstruktion.Utils;
 
 namespace MVC_databaskonstruktion.Models
 {
@@ -22,6 +23,15 @@ namespace MVC_databaskonstruktion.Models
             return _tableBuilder
                 .SetDataTable(_databaseRepository.GetTable($"SELECT * FROM Incident WHERE IncidentName LIKE '%{searchQuery}%';"))
                 .SetRedirect("Details")
+                .Build();
+        }
+
+        public TableObject GetReports(string IncidentName, int IncidentNumber)
+        {
+            var reportsTable = new TableObjectBuilder();
+
+            return reportsTable
+                .SetDataTable(_databaseRepository.GetTable($"SELECT * FROM Report WHERE IncidentName = '{IncidentName}' AND IncidentNumber = '{IncidentNumber}';"))
                 .Build();
         }
 
@@ -64,6 +74,31 @@ namespace MVC_databaskonstruktion.Models
             return modalBuilder.Build();
         }
 
+        public ModalContext CreateOperationModal(string IncidentName, int IncidentNumber)
+        {
+            var incidentSelection = _databaseRepository.GetColumnAsDropdown("SELECT IncidentName, IncidentNumber FROM Incident;");
+            var groupLeaderSelection = _databaseRepository.GetColumnAsDropdown("SELECT CodeName FROM GroupLeaders");
+            var successSelection = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Success", Value = "True" },
+                new SelectListItem { Text = "Fail", Value = "False" }
+            };
+
+            var modalBuilder = new ModalBuilder()
+                .SetTitle("Create Operation")
+                .SetIdentifier("createOperationModal")
+                .SetAction("CreateOperation", "Incidents")
+                .AddInput("OperationName", "OperationName", "normal", "OperationName")
+                .AddInput("StartDate", "StartDate", "datetime", "StartDate")
+                .AddInput("EndDate", "EndDate", "datetime", "EndDate")
+                .AddInput("SuccessRate", "Operation Result", "dropdown", "", successSelection)
+                .AddInput("GroupLeader", "GroupLeader", "dropdown", "", groupLeaderSelection)
+                .AddInput("IncidentName", "IncidentName", "hidden", IncidentName)
+                .AddInput("IncidentNumber", "IncidentNumber", "hidden", IncidentNumber.ToString());
+
+            return modalBuilder.Build();
+        }
+
         public void CreateIncident(string IncidentName, int IncidentNumber, string RegionName, int Terrain, string Location)
         {
             var IncidentData = new List<KeyValuePair<string, object>>
@@ -76,6 +111,22 @@ namespace MVC_databaskonstruktion.Models
             };
 
             _databaseRepository.CreateRow("Incident", IncidentData);
+        }
+
+        public void CreateOperation(string OperationName, DateTime StartDate, DateTime EndDate, bool SuccessRate, string GroupLeader, string IncidentName, int IncidentNumber)
+        {
+            var OperationData = new List<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>("OperationName", OperationName),
+                new KeyValuePair<string, object>("StartDate", StartDate.ToString("yyyy-M-d")),
+                new KeyValuePair<string, object>("EndDate", EndDate.ToString("yyyy-M-d")),
+                new KeyValuePair<string, object>("SuccessRate", SuccessRate),
+                new KeyValuePair<string, object>("GroupLeader", GroupLeader),
+                new KeyValuePair<string, object>("IncidentName", IncidentName),
+                new KeyValuePair<string, object>("IncidentNumber", IncidentNumber)
+            };
+
+            _databaseRepository.CreateRow("Operation", OperationData);
         }
     }
 }
