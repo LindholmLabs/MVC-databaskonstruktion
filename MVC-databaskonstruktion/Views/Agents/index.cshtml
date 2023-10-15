@@ -1,4 +1,19 @@
-﻿<h3>FieldAgents</h3>
+﻿@{
+    ViewData["Title"] = "Agents";
+}
+
+<h1>Agents</h1>
+<hr />
+
+<form action="@Url.Action("Search")" method="get" class="mt-1">
+    <label>Search for Agent:</label>
+    <br />
+    <input type="text" name="searchQuery" placeholder="Search" class="form-control d-inline-block" style="vertical-align: middle; width: auto;" />
+    <button type="submit" class="btn btn-primary ml-2">Search</button>
+</form>
+<hr />
+
+<h3>FieldAgents</h3>
 <partial name="_TablePartial" model="ViewBag.FieldAgents" />
 <hr />
 
