@@ -33,6 +33,13 @@ namespace MVC_databaskonstruktion.Controllers
             return View("Details");
         }
 
+        public IActionResult FilterOperations(DateTime StarDate, DateTime EndDate) 
+        {
+            ViewBag.FilteredOperations = _operationsModel.FilterOperations(StarDate, EndDate);
+
+            return View("FilterOperations");
+        }
+
         public IActionResult Delete(string table, string IncidentName, string IncidentNumber, string OperationName, DateTime StartDate)
         {
             try

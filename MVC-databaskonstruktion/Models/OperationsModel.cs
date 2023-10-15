@@ -35,6 +35,13 @@ namespace MVC_databaskonstruktion.Models
                 .Build();
         }
 
+        public TableObject FilterOperations(DateTime StartDate, DateTime EndDate)
+        {
+            return _tableBuilder
+                .SetDataTable(_databaseRepository.GetTable($"CALL GetOperationsInRange('{StartDate}', '{EndDate}')"))
+                .Build();
+        }
+
         public TableObject GetAgentsInOperation(string OperationName, DateTime StartDate, string IncidentName, int IncidentNumber)
         {
             return _tableBuilder
