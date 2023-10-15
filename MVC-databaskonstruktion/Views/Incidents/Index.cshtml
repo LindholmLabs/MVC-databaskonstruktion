@@ -1,4 +1,11 @@
-﻿<form action="@Url.Action("index")" method="get" class="mt-1">
+﻿@{
+    ViewData["Title"] = "Incidents";
+}
+
+<h1>Incidents</h1>
+<hr />
+
+<form action="@Url.Action("index")" method="get" class="mt-1">
     <label>Search for Incident:</label>
     <br />
     <input type="text" name="IncidentName" placeholder="Search" class="form-control d-inline-block" style="vertical-align: middle; width: auto;" />
