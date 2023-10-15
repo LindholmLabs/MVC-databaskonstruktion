@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Build.Evaluation;
 using MVC_databaskonstruktion.Utils;
 
 namespace MVC_databaskonstruktion.Models
@@ -51,6 +52,13 @@ namespace MVC_databaskonstruktion.Models
             _databaseRepository.DeleteRow(table, conditions);
         }
 
+        public TableObject SearchAgents(string searchQuery)
+        {
+            return _tableBuilder
+                .SetDataTable(_databaseRepository.GetTable($"SELECT * FROM Agent WHERE CodeName LIKE '%{searchQuery}%' OR FirstName LIKE '%{searchQuery}%' OR LastName LIKE '%{searchQuery}%';"))
+                .Build();
+        }
+
         public TableObject GetFieldAgents()
         {
             return _tableBuilder
@@ -80,8 +88,10 @@ namespace MVC_databaskonstruktion.Models
             string query = $"SELECT * FROM OperatesIn WHERE CodeName = '{CodeName}';";
 
             return _tableBuilder.SetDataTable(_databaseRepository.GetTable(query))
-                .SetDeleteTable(string.Empty)
-                .SetRedirect(string.Empty)
+                .SetControllerName("Operations")
+                .SetPrimaryKeys(new List<string> { "OperationName", "StartDate", "IncidentName", "IncidentNumber"})
+                .SetDeleteTable("Operation")
+                .SetRedirect("Details")
                 .Build();
         }
 

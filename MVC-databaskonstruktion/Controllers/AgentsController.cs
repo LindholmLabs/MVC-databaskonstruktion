@@ -24,6 +24,13 @@ namespace MVC_databaskonstruktion.Controllers
             return View();
         }
 
+        public IActionResult Search(string searchQuery)
+        {
+            ViewBag.Agents = _agentsModel.SearchAgents(searchQuery);
+
+            return View("Search");
+        }
+
         public IActionResult Create(
             string CodeName, 
             string FirstName, 
