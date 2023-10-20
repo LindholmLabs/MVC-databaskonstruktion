@@ -99,6 +99,24 @@ namespace MVC_databaskonstruktion.Models
             return modalBuilder.Build();
         }
 
+        public ModalContext CreateReportModal(string IncidentName, int IncidentNumber)
+        {
+            var AuthorSelection = _databaseRepository.GetColumnAsDropdown("SELECT CodeName FROM Agent");
+
+            var modalBuilder = new ModalBuilder()
+                .SetTitle("Write report")
+                .SetIdentifier("createReportModal")
+                .SetAction("CreateReport", "Incidents")
+                .AddInput("Title", "Title", "normal", "Title")
+                .AddInput("DateCreated", "DateCreated", "datetime", "DateCreated")
+                .AddInput("Content", "Content", "multiline", "Content")
+                .AddInput("IncidentName", "IncidentName", "hidden", IncidentName)
+                .AddInput("IncidentNumber", "IncidentNumber", "hidden", IncidentNumber.ToString())
+                .AddInput("Author", "Author", "dropdown", "", AuthorSelection);
+
+            return modalBuilder.Build();
+        }
+
         public void CreateIncident(string IncidentName, int IncidentNumber, string RegionName, int Terrain, string Location)
         {
             var IncidentData = new List<KeyValuePair<string, object>>
@@ -111,6 +129,21 @@ namespace MVC_databaskonstruktion.Models
             };
 
             _databaseRepository.CreateRow("Incident", IncidentData);
+        }
+
+        public void CreateReport(string IncidentName, int IncidentNumber, string Title, DateTime DateCreated, string Content, string Author)
+        {
+            var ReportData = new List<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>("IncidentName", IncidentName),
+                new KeyValuePair<string, object>("IncidentNumber", IncidentNumber),
+                new KeyValuePair<string, object>("Title", Title),
+                new KeyValuePair<string, object>("DateCreated", DateCreated.ToString("yyyy-M-d")),
+                new KeyValuePair<string, object>("Content", Content),
+                new KeyValuePair<string, object>("Author", Author)
+            };
+
+            _databaseRepository.CreateRow("Report", ReportData);
         }
 
         public void CreateOperation(string OperationName, DateTime StartDate, DateTime EndDate, bool SuccessRate, string GroupLeader, string IncidentName, int IncidentNumber)

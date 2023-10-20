@@ -28,6 +28,7 @@ namespace MVC_databaskonstruktion.Controllers
             ViewBag.Operations = _incidentsModel.GetOperations(IncidentName, incidentNumber);
             ViewBag.AddOperationModal = _incidentsModel.CreateOperationModal(IncidentName, incidentNumber);
             ViewBag.Reports = _incidentsModel.GetReports(IncidentName, incidentNumber);
+            ViewBag.AddReportModal = _incidentsModel.CreateReportModal(IncidentName, incidentNumber);
 
             return View();
         }
@@ -83,6 +84,38 @@ namespace MVC_databaskonstruktion.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult CreateReport(string IncidentName, int IncidentNumber, string Title, DateTime DateCreated, string Content, string Author)
+        {
+            try
+            {
+                _incidentsModel.CreateReport(IncidentName, IncidentNumber, Title, DateCreated, Content, Author);
+            }
+            catch (MySqlException e)
+            {
+                switch (e.Number)
+                {
+                    case 1062:
+                        TempData["ErrorMessage"] = "Incident already exists!";
+                        break;
+                    case 1406:
+                        TempData["ErrorMessage"] = "Data too long!";
+                        break;
+                    case 3819:
+                        TempData["ErrorMessage"] = "Invalid Data!";
+                        break;
+                    default:
+                        TempData["ErrorMessage"] = $"Something went wrong: {e.Number}";
+                        break;
+                }
+            }
+
+            return RedirectToAction("Details", new
+            {
+                IncidentName,
+                IncidentNumber
+            });
         }
 
         public IActionResult CreateOperation(string OperationName, DateTime StartDate, DateTime EndDate, bool SuccessRate, string GroupLeader, string IncidentName, int IncidentNumber)
